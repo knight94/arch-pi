@@ -575,6 +575,12 @@ fi
 
 [ ! -z "$DOWNLOAD_PACKAGE_SETS" ] && doDownloadPackageSets
 
+cd $SCRIPT_PATH
+cp ../ArchMatic/1-xorg.sh root/home/alarm
+cp ../ArchMatic/2-xfce.sh root/home/alarm
+cp ../ArchMatic/3-chrome.sh root/home/alarm
+cp ../ArchMatic/9-setup.sh root/home/alarm
+
 doPrint "Flushing - this might take a while..."
 doFlush
 
