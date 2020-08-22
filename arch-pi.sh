@@ -135,7 +135,7 @@ doDownloadArchLinux() {
 }
 
 doGetAllPartitions() {
-    lsblk -l -n -o NAME -x NAME "$INSTALL_DEVICE" | grep "^$INSTALL_DEVICE_FILE" | grep -v "^$INSTALL_DEVICE_FILE$"
+    lsblk -l -n -o NAME -x NAME "$INSTALL_DEVICE" | grep "^$INSTALL_DEVICE_FILE" | grep -v "^$INSTALL_DEVICE_FILE\$"
 }
 
 doFlush() {
@@ -190,10 +190,22 @@ doCreateNewPartitions() {
 }
 
 doDetectDevices() {
-    local ALL_PARTITIONS=($( doGetAllPartitions ))
+    declare -a ALL_PARTITIONS
+    eval doGetAllPartitions
+    ALL_PARTITIONS=($( eval doGetAllPartitions ))
 
-    BOOT_DEVICE="$INSTALL_DEVICE_PATH/${ALL_PARTITIONS[0]}"
-    ROOT_DEVICE="$INSTALL_DEVICE_PATH/${ALL_PARTITIONS[1]}"
+    echo "${ALL_PARTITIONS[@]}"
+    echo "${ALL_PARTITIONS[0]}"
+    echo "${ALL_PARTITIONS[1]}"
+    declare -a ALL_PARTITIONS_1
+    ALL_PARTITIONS_1=($( doGetAllPartitions ))
+    echo "${ALL_PARTITIONS_1[@]}"
+    echo "${ALL_PARTITIONS_1[0]}"
+    echo "${ALL_PARTITIONS_1[1]}"
+    #exit 1
+    BOOT_DEVICE="$INSTALL_DEVICE_PATH/${ALL_PARTITIONS_1[0]}"
+    ROOT_DEVICE="$INSTALL_DEVICE_PATH/${ALL_PARTITIONS_1[1]}"
+    echo "$ROOT_DEVICE" "$BOOT_DEVICE"
 }
 
 doMkfs() {
@@ -209,6 +221,7 @@ doMkfs() {
 }
 
 doFormat() {
+    echo "$BOOT_FILESYSTEM" "$BOOT_LABEL" "$BOOT_DEVICE"
     doMkfs "$BOOT_FILESYSTEM" "$BOOT_LABEL" "$BOOT_DEVICE"
     doMkfs "$ROOT_FILESYSTEM" "$ROOT_LABEL" "$ROOT_DEVICE"
 }
