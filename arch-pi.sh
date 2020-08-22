@@ -333,15 +333,14 @@ __END__
 }
 
 doEnableWireless() {
-    cat > "root/etc/systemd/system/netctl@$WIRELESS_INTERFACE.service" << __END__
-.include /usr/lib/systemd/system/netctl@.service
-
+mkdir root/etc/systemd/system/netctl@$WIRELESS_INTERFACE.service.d
+    cat > "root/etc/systemd/system/netctl@$WIRELESS_INTERFACE.service.d/profile.d" << __END__
 [Unit]
 BindsTo=sys-subsystem-net-devices-$WIRELESS_INTERFACE.device
 After=sys-subsystem-net-devices-$WIRELESS_INTERFACE.device
 __END__
 
-    ln -s "/etc/systemd/system/netctl@$WIRELESS_INTERFACE.service" "root/etc/systemd/system/multi-user.target.wants/netctl@$WIRELESS_INTERFACE.service"
+    ln -s "/etc/systemd/system/netctl@$WIRELESS_INTERFACE.service.d/profile.d" "root/etc/systemd/system/multi-user.target.wants/netctl@$WIRELESS_INTERFACE.service"
 }
 
 doDisableIpv6() {
