@@ -26,11 +26,10 @@ using the pre-configured IP address.
 
 In order to use
 `arch-pi`,
-you need an extra Linux environment (Mac support not quite there...) which is
+you need an extra Linux environment which is
 connected to the Internet and has an SD card slot.
 
-For the Linux environment, you can also use a Live-CD like
-[Xubuntu](http://xubuntu.org/). Just make sure the following commands are
+Just make sure the following commands are
 available:
 
 * `lsblk`
@@ -45,7 +44,12 @@ In a Terminal download and unpack the latest version of
 `arch-pi`:
 
 ```
-curl -L https://github.com/wrzlbrmft/arch-pi/archive/master.tar.gz | tar zxvf -
+curl -L https://github.com/knight94/arch-pi/archive/master.tar.gz | tar zxvf -
+```
+
+For post installation setup and configuration doenload the folloeing file
+```
+curl -L https://github.com/knight94/ArchMatic/archive/master.tar.gz | tar zxvf -
 ```
 
 Insert the SD card on which you want to install Arch Linux, but make sure none
@@ -94,107 +98,6 @@ That's it!
 
 You can login as the default user `alarm` with the password `alarm`.
 The default root password is `root`.
-
-### Installing Yay or Yaourt
-
-`arch-pi`
-can also download the packages required for installing
-[Yay](https://github.com/Jguer/yay) or
-[Yaourt](https://github.com/archlinuxfr/yaourt), by changing the `DOWNLOAD_YAY`
-or `DOWNLOAD_YAOURT` settings. Both Yay and Yaourt in turn allow you to install
-packages from the [AUR](https://aur.archlinux.org/).
-
-**NOTE:** Yaourt is not maintained anymore.
-
-Before you can install Yay or Yaourt, you first have to set up a build
-environment, so login as `root` (password is `root`) and type in:
-
-```
-pacman -Syy --noconfirm --needed base-devel sudo
-```
-
-Next, configure `sudo`, allowing members of the group `wheel` to use it by
-editing the `sudoers` file:
-
-```
-nano -w /etc/sudoers
-```
-
-Remove the leading `#` from the following line to uncomment it:
-
-```
-%wheel ALL=(ALL) ALL
-```
-
-Save the `sudoers` file by pressing `Ctrl-X`, `y`, `Enter` and then logout:
-
-```
-logout
-```
-
-Login again, but this time as the user `alarm` (password is `alarm`), and change
-to the directory containing the Yaourt packages:
-
-```
-cd /home/alarm/software/aaa.dist
-```
-
-**NOTE:** The Yay and Yaourt packages are in `/home/alarm/software/aaa.dist`
-unless you changed the `YAY_PATH` or `YAOURT_PATH` settings.
-
-To install Yay:
-
-```
-tar xvf yay.tar.gz
-cd yay
-makepkg -i -s --noconfirm --needed
-
-cd ..
-```
-
-To install Yaourt:
-
-```
-tar xvf package-query.tar.gz
-cd package-query
-makepkg -i -s --noconfirm --needed
-
-cd ..
-
-tar xvf yaourt.tar.gz
-cd yaourt
-makepkg -i -s --noconfirm --needed
-
-cd ..
-```
-
-After Yay or Yaourt is installed, it's probably a good idea to check for
-available package updates:
-
-Using Yay:
-
-```
-yay -Syyu
-```
-
-Using Yaourt:
-
-```
-yaourt -Syyua
-```
-
-If there are, just follow the instructions on the screen.
-
-That's it!
-
-### Using an Alternative Configuration File
-
-You can use an alternative configuration file by passing it to the installation
-script:
-
-```
-arch-pi-master/arch-pi.sh -c my.conf
-```
 
 ## License
 
